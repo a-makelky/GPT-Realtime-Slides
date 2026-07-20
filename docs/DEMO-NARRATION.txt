@@ -1,0 +1,13 @@
+Presentation software usually assumes the presenter is standing beside a keyboard. GPT Realtime Slides keeps the human with the room, while keeping every automated action deterministic.
+
+One small content module renders two synchronized experiences. The audience receives clean slides. The presenter receives navigation, speaker notes, QR sharing, a command sandbox, and optional voice status. There is no second deck to drift out of sync.
+
+Every essential action works by keyboard or visible buttons. The hosted sandbox needs no account and no API key. A command such as “go to slide seven” maps to the same allowlisted controller used by manual input and the optional Realtime tools.
+
+The Realtime design deliberately gives the model very little authority. The browser verifies a standalone wake word. A response may call one supported presentation tool. The model cannot rewrite slides, invent audience data, or speak over the presenter.
+
+OpenAI’s recommended WebRTC pattern keeps a standard API key on the deployer’s server. The browser receives only a short-lived client secret. This public repository includes no maintainer credential, personal contact information, attendee data, production account identifier, or third-party media.
+
+Codex and GPT-5.6 helped turn a working event system into this reusable public product. Parallel subagents audited privacy, licensing, Git history, and the extraction boundary. The important human decisions were what to exclude, how to preserve one content source, and how little authority voice control should receive.
+
+Fork the repository, change one deck file and six theme tokens, and make it yours. GPT Realtime Slides is open source under the MIT license.
