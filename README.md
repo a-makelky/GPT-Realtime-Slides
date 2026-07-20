@@ -2,7 +2,9 @@
 
 A customizable, manual-first presentation runtime with separate presenter and audience views, speaker notes, QR sharing, deterministic command controls, and optional silent OpenAI Realtime voice navigation.
 
-**[Try the public demo](https://a-makelky.github.io/GPT-Realtime-Slides/)** · [Open the audience-only view](https://a-makelky.github.io/GPT-Realtime-Slides/slides.html)
+**[Try the public demo](https://gpt-realtime-slides.pages.dev/)** · [Open the audience-only view](https://gpt-realtime-slides.pages.dev/slides)
+
+**[Watch the 1:46 Build Week demo](https://youtu.be/ycg1gV7y_IQ)**
 
 ![GPT Realtime Slides presenter view](docs/demo-preview.jpg)
 
@@ -21,7 +23,7 @@ Presentation software usually assumes the presenter is near a keyboard. GPT Real
 
 ## Test it without rebuilding
 
-Visit the [hosted presenter demo](https://a-makelky.github.io/GPT-Realtime-Slides/). Then:
+Visit the [hosted presenter demo](https://gpt-realtime-slides.pages.dev/). Then:
 
 1. Use the arrow buttons or keyboard arrows.
 2. Enter `go to slide 7` in the command sandbox.

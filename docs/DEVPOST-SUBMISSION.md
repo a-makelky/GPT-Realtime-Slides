@@ -51,8 +51,8 @@ Add an authoring UI, export themes as packages, and provide deployment adapters 
 
 ## Links
 
-- Demo: https://a-makelky.github.io/GPT-Realtime-Slides/
-- Audience view: https://a-makelky.github.io/GPT-Realtime-Slides/slides.html
+- Demo: https://gpt-realtime-slides.pages.dev/
+- Audience view: https://gpt-realtime-slides.pages.dev/slides
 - Source: https://github.com/a-makelky/GPT-Realtime-Slides
-- Demo video: pending upload
+- Demo video: https://youtu.be/ycg1gV7y_IQ
 - Codex session ID: 019f7cd2-ff5e-7843-9035-22699c0049cc
