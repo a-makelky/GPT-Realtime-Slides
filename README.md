@@ -75,25 +75,33 @@ The Cloudflare extension stores anonymous multiple-choice entrance and exit rati
 - Public results stay hidden until three paired responses exist and then update in complete groups of three.
 - The migration creates tables and indexes only. It contains no fixture rows or production data.
 
-The hosted Cloudflare demo includes this extension. The static GitHub Pages build remains a manual presentation fallback and reports that audience input is unavailable.
+The hosted Cloudflare demo includes this extension. The static GitHub Pages build remains a manual presentation fallback and reports that audience input is unavailable. The complete [Cloudflare audience-input guide](docs/CLOUDFLARE-AUDIENCE-SETUP.md) covers local rehearsal, direct deployment, Git-connected Pages, customization, and troubleshooting.
 
-To deploy your own database-backed copy:
+The short setup path is:
 
 ```bash
 npm install
-npm run build
-npx wrangler d1 create your-audience-database
-cp wrangler.example.jsonc wrangler.jsonc
+npx wrangler login
+npx wrangler d1 create my-slides-audience
+npm run cf:setup -- --project my-realtime-slides --database my-slides-audience --database-id PASTE_THE_UUID_FROM_WRANGLER --event-id my-event-2026
 ```
 
-Put the new database ID in the ignored `wrangler.jsonc`, then apply the schema and deploy:
+Rehearse against local D1 before touching the empty production database:
 
 ```bash
-npx wrangler d1 migrations apply your-audience-database --remote
-npx wrangler pages deploy dist --project-name your-pages-project --branch main
+npm run db:migrate:local
+npm run cf:dev
 ```
 
-The committed Wrangler file is an example. Real Cloudflare account, project, and database identifiers stay outside Git. Anonymous public forms still need deployment-specific bot and rate-limit controls before use at a large event.
+When the local flow is ready, apply the same schema remotely, verify the database is blank, and deploy:
+
+```bash
+npm run db:migrate:remote
+npm run db:assert-empty:remote
+npm run cf:deploy -- --branch main
+```
+
+The guided setup creates an ignored `wrangler.jsonc` and refuses to overwrite an existing one. Real Cloudflare account, project, and database identifiers stay outside Git. Anonymous public forms still need deployment-specific bot and rate-limit controls before use at a large event.
 
 Cloudflare Pages preview deployments inherit the production binding when it is declared in the Wrangler file. Do not submit test responses through a deployed preview URL. Use Wrangler's local D1 storage for rehearsals and automated tests.
 
