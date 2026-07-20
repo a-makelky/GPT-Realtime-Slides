@@ -1,0 +1,26 @@
+{
+  "name": "gpt-realtime-slides",
+  "version": "1.0.0",
+  "description": "A customizable, manual-first presentation runtime with optional silent OpenAI Realtime voice controls.",
+  "type": "module",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4173",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "check": "node --check src/main.js && node --check src/core/controller.js && node --check src/core/renderer.js && node --check src/realtime/client.js && node --check server/realtime-token-server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "verify": "npm run check && npm test && npm run build",
+    "server:realtime": "node server/realtime-token-server.mjs"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "vite": "^7.0.5"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
