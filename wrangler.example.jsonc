@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "gpt-realtime-slides",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-07-19",
+  "vars": {
+    "EVENT_ID": "starter-deck"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "gpt-realtime-slides-audience",
+      "database_id": "REPLACE_WITH_PRODUCTION_DATABASE_ID",
+      "preview_database_id": "DB",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

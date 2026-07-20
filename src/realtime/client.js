@@ -16,6 +16,7 @@ export const DECK_TOOLS = Object.freeze([
     },
   },
   tool("show_qr", "Show the configured audience QR code."),
+  tool("show_audience_results", "Show privacy-thresholded aggregate audience results."),
   tool("hide_overlay", "Hide the currently visible presentation overlay."),
 ]);
 
@@ -39,6 +40,7 @@ export function dispatchDeckTool(name, args = {}, controller) {
       return controller.goTo(slideNumber);
     }
     case "show_qr": return controller.showQr();
+    case "show_audience_results": return controller.showAudienceResults();
     case "hide_overlay": return controller.hideOverlay();
     default: throw new Error(`Unsupported deck tool: ${String(name)}`);
   }
@@ -49,6 +51,7 @@ export function parseSandboxCommand(value) {
   if (/^(next|next slide|advance)$/u.test(command)) return { name: "next_slide", args: {} };
   if (/^(previous|previous slide|back|go back)$/u.test(command)) return { name: "previous_slide", args: {} };
   if (/^(show|open) (the )?(qr|qr code)$/u.test(command)) return { name: "show_qr", args: {} };
+  if (/^(show|open) (the )?(audience )?(results|pulse)$/u.test(command)) return { name: "show_audience_results", args: {} };
   if (/^(hide|close|clear)( the)? (qr|overlay)$/u.test(command)) return { name: "hide_overlay", args: {} };
   const direct = command.match(/^(?:go to |show )?slide (\d+)$/u);
   if (direct) return { name: "go_to_slide", args: { slide_number: Number(direct[1]) } };

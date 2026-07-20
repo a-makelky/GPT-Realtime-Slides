@@ -11,16 +11,18 @@ The review covered tracked source, sample content, documentation, tests, build c
 - Event-specific slide copy and speaker biography
 - Contact cards, phone numbers, email addresses, and social profiles
 - Personal photographs, family media, and product screenshots
-- Attendee forms, IDs, responses, testimonials, and exported data
+- Original event forms, IDs, responses, testimonials, and exported data
 - Personal domains and event routes
 - Cloud-provider account, database, namespace, and worker identifiers
 - API keys, environment files, local state, and source maps
 
 ## Public data behavior
 
-The demo has no forms, analytics, cookies, accounts, telemetry, or persistence. It does not collect or transmit personal information.
+The starter has no identity, testimonial, free-text, analytics, cookie, or browser-fingerprinting field. The optional Cloudflare extension stores opaque attendee IDs, recovery-code hashes, multiple-choice answers, and timestamps in a new D1 database.
 
-The command sandbox is entirely local. Optional Realtime voice control transmits microphone audio only after the deployer explicitly enables the feature and the presenter grants microphone permission.
+The public aggregate endpoint releases complete cohorts of at least three. It never returns raw answers, attendee IDs, recovery material, hidden totals, or per-response timestamps. The migration contains no `INSERT` statements, so a new deployment begins with zero attendee, submission, and answer rows.
+
+The command sandbox is entirely local. Optional Realtime voice control transmits microphone audio only after the deployer explicitly enables the feature and the presenter grants microphone permission. Audience input does not depend on Realtime or an OpenAI API key.
 
 ## Automated checks
 

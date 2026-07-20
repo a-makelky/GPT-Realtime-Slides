@@ -15,6 +15,11 @@ export const config = Object.freeze({
     url: "./slides.html",
     label: "Open the audience view",
   },
+  audience: {
+    enabled: true,
+    participantUrl: "./participate.html?phase=entrance",
+    aggregateEndpoint: "/api/audience/aggregates",
+  },
   realtime: {
     enabled: false,
     wakeWord: "cue",

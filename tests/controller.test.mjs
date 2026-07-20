@@ -10,6 +10,8 @@ test("manual controls clamp boundaries and manage overlays deterministically", (
   assert.equal(controller.getState().index, 2);
   controller.showQr();
   assert.equal(controller.getState().overlay, "qr");
+  controller.showAudienceResults();
+  assert.equal(controller.getState().overlay, "audience");
   controller.next();
   assert.equal(controller.getState().overlay, null);
 });

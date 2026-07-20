@@ -9,7 +9,7 @@ test("wake word must be standalone", () => {
 
 test("sandbox commands map to the same allowlisted tools as Realtime", () => {
   const allowed = new Set(DECK_TOOLS.map((item) => item.name));
-  for (const command of ["next slide", "back", "go to slide 7", "show QR", "hide overlay"]) {
+  for (const command of ["next slide", "back", "go to slide 7", "show QR", "show audience results", "hide overlay"]) {
     assert.ok(allowed.has(parseSandboxCommand(command).name));
   }
   assert.equal(parseSandboxCommand("invent a slide"), null);
@@ -22,11 +22,13 @@ test("tool dispatch calls only deterministic controller methods", () => {
     previous: () => calls.push(["previous"]),
     goTo: (value) => calls.push(["goTo", value]),
     showQr: () => calls.push(["showQr"]),
+    showAudienceResults: () => calls.push(["showAudienceResults"]),
     hideOverlay: () => calls.push(["hideOverlay"]),
   };
   dispatchDeckTool("next_slide", {}, controller);
   dispatchDeckTool("go_to_slide", { slide_number: 4 }, controller);
   dispatchDeckTool("show_qr", {}, controller);
-  assert.deepEqual(calls, [["next"], ["goTo", 4], ["showQr"]]);
+  dispatchDeckTool("show_audience_results", {}, controller);
+  assert.deepEqual(calls, [["next"], ["goTo", 4], ["showQr"], ["showAudienceResults"]]);
   assert.throws(() => dispatchDeckTool("write_slide", {}, controller), /Unsupported/);
 });

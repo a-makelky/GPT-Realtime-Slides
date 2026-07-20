@@ -47,6 +47,10 @@ export function createDeckController(slideCount, initialIndex = 0) {
       state.overlay = "qr";
       return emit();
     },
+    showAudienceResults() {
+      state.overlay = "audience";
+      return emit();
+    },
     hideOverlay() {
       state.overlay = null;
       return emit();

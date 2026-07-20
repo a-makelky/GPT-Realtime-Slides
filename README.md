@@ -1,10 +1,12 @@
 # GPT Realtime Slides
 
-A customizable, manual-first presentation runtime with separate presenter and audience views, speaker notes, QR sharing, deterministic command controls, and optional silent OpenAI Realtime voice navigation.
+A customizable, manual-first presentation runtime with separate presenter and audience views, anonymous audience input, live aggregate results, speaker notes, QR sharing, deterministic command controls, and optional silent OpenAI Realtime voice navigation.
 
-**[Try the public demo](https://gpt-realtime-slides.pages.dev/)** · [Open the audience-only view](https://gpt-realtime-slides.pages.dev/slides)
+[Try the public demo](https://gpt-realtime-slides.pages.dev/) · [Open the audience-only view](https://gpt-realtime-slides.pages.dev/slides)
 
-**[Watch the 1:46 Build Week demo](https://youtu.be/ycg1gV7y_IQ)**
+[Watch the 1:46 Build Week demo](https://youtu.be/ycg1gV7y_IQ)
+
+[Share sample audience input](https://gpt-realtime-slides.pages.dev/participate?phase=entrance)
 
 ![GPT Realtime Slides presenter view](docs/demo-preview.jpg)
 
@@ -17,6 +19,7 @@ Presentation software usually assumes the presenter is near a keyboard. GPT Real
 - One canonical content source renders both presenter and audience views.
 - Audience pages never contain the presenter console or speaker notes.
 - Keyboard, button, sandbox, and Realtime actions call the same deterministic controller.
+- Optional Cloudflare D1 storage pairs anonymous entrance and exit ratings and returns grouped results to the presenter.
 - Voice control is wake-word gated, silent, and limited to one allowlisted tool call.
 - The deck still works when the microphone, network, or OpenAI integration is unavailable.
 - No API key, attendee data, personal contact information, or production account identifier ships with the project.
@@ -27,8 +30,9 @@ Visit the [hosted presenter demo](https://gpt-realtime-slides.pages.dev/). Then:
 
 1. Use the arrow buttons or keyboard arrows.
 2. Enter `go to slide 7` in the command sandbox.
-3. Select **QR** and scan the audience link.
-4. Open **Notes** and confirm those notes are absent from the audience page.
+3. Open `Results` to see the audience-data state without interrupting the deck.
+4. Select `QR` and scan the audience link.
+5. Open `Notes` and confirm those notes are absent from the audience page.
 
 The public demo intentionally leaves Realtime disabled because an open-source repository and static site must not include or expose a maintainer's API credentials. The full Realtime client is included for deployers who connect their own protected backend.
 
@@ -55,10 +59,43 @@ The starter keeps the authoring surface deliberately small:
 
 - `src/content/deck.js` owns all sample slide copy and notes.
 - `src/config.js` owns theme tokens, QR behavior, the wake word, and optional Realtime settings.
+- `shared/audience-config.js` owns the paired multiple-choice questions used by the browser and server.
 - `src/core/renderer.js` owns the seven safe layouts: `title`, `statement`, `bullets`, `columns`, `steps`, `quote`, and `closing`.
 - `src/styles.css` owns the visual system and responsive behavior.
 
 Slides are data, not arbitrary HTML. The schema rejects duplicate IDs, unknown layouts, and raw `html` fields. This keeps customization approachable and prevents slide content from quietly turning into executable code.
+
+## Optional Cloudflare audience input
+
+The Cloudflare extension stores anonymous multiple-choice entrance and exit ratings in D1. It does not contain fields for names, emails, organizations, testimonials, or free text.
+
+- Each attendee receives a random UUID and a separate 20-character recovery code.
+- D1 stores only a hash of the recovery code.
+- A phase can be submitted once. Identical retries are safe; changed retries are rejected.
+- Public results stay hidden until three paired responses exist and then update in complete groups of three.
+- The migration creates tables and indexes only. It contains no fixture rows or production data.
+
+The hosted Cloudflare demo includes this extension. The static GitHub Pages build remains a manual presentation fallback and reports that audience input is unavailable.
+
+To deploy your own database-backed copy:
+
+```bash
+npm install
+npm run build
+npx wrangler d1 create your-audience-database
+cp wrangler.example.jsonc wrangler.jsonc
+```
+
+Put the new database ID in the ignored `wrangler.jsonc`, then apply the schema and deploy:
+
+```bash
+npx wrangler d1 migrations apply your-audience-database --remote
+npx wrangler pages deploy dist --project-name your-pages-project --branch main
+```
+
+The committed Wrangler file is an example. Real Cloudflare account, project, and database identifiers stay outside Git. Anonymous public forms still need deployment-specific bot and rate-limit controls before use at a large event.
+
+Cloudflare Pages preview deployments inherit the production binding when it is declared in the Wrangler file. Do not submit test responses through a deployed preview URL. Use Wrangler's local D1 storage for rehearsals and automated tests.
 
 ## Optional OpenAI Realtime voice control
 
@@ -81,23 +118,24 @@ This project began as a production presentation system built for a live communit
 
 Codex accelerated four parts of the work:
 
-1. **Architecture excavation.** It mapped the working event system and separated the reusable control layer from forms, attendee data, live infrastructure, and personal assets.
-2. **Parallel risk review.** Independent subagents audited PII, secrets, licensing, repository history, and the clean extraction boundary.
-3. **Product decisions.** The human decision was to keep one content source, manual controls as the foundation, presenter/audience separation, and a narrow silent voice contract. Codex implemented and tested those decisions.
-4. **Public-release verification.** Codex created a new history from an allowlist, added privacy regression tests, validated the production build, and tested the hosted presenter and audience routes.
+1. Architecture excavation: It mapped the working event system and separated reusable presentation and aggregate-data patterns from attendee records, live infrastructure, and personal assets.
+2. Parallel risk review: Independent subagents audited PII, secrets, licensing, repository history, and the clean extraction boundary.
+3. Product decisions: The human decision was to keep one content source, manual controls as the foundation, presenter/audience separation, and a narrow silent voice contract. Codex implemented and tested those decisions.
+4. Public-release verification: Codex created a new history from an allowlist, added privacy regression tests, validated the production build, and tested the hosted presenter and audience routes.
 
-The most consequential decisions were not code generation: exclude the event database entirely, exclude every personal proof asset instead of redacting it, make the public demo useful without credentials, and treat Realtime as an optional controller rather than the presentation engine.
+The public release uses a new schema-only database rather than the event database, excludes every personal proof asset, works without OpenAI credentials, and treats Realtime as an optional controller rather than the presentation engine.
 
 Primary Codex `/feedback` session ID: `019f7cd2-ff5e-7843-9035-22699c0049cc`
 
 ## Hackathon work boundary
 
-The live-event ancestor and this public productization were created during the July 13–21, 2026 OpenAI Build Week submission period. This repository contains only the newly extracted, generalized implementation. It deliberately does not import the private event repository's history, attendee systems, personal media, or deployment configuration.
+The live-event ancestor and this public productization were created during the July 13 to July 21, 2026 OpenAI Build Week submission period. This repository contains only the newly extracted, generalized implementation. It deliberately does not import the private event repository's history, attendee systems, personal media, or deployment configuration.
 
 ## Privacy and security
 
-- No telemetry, cookies, forms, analytics, accounts, or attendee storage.
-- No browser fingerprinting or personal identifiers.
+- No telemetry, cookies, analytics, accounts, browser fingerprinting, or identity fields.
+- Optional attendee storage is limited to opaque IDs, recovery-code hashes, multiple-choice answers, and timestamps.
+- Public endpoints return grouped results only after the configured release threshold.
 - No standard API key in the browser or repository.
 - Speaker notes are presentation-only separation, not a secrets boundary; anything shipped to the browser must be safe to publish.
 - The repository test suite scans public source for known event identities, domains, phone-number patterns, and API-key shapes.

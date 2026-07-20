@@ -10,6 +10,7 @@ export default defineConfig({
         presenter: resolve(import.meta.dirname, "index.html"),
         present: resolve(import.meta.dirname, "present.html"),
         slides: resolve(import.meta.dirname, "slides.html"),
+        participate: resolve(import.meta.dirname, "participate.html"),
       },
     },
   },

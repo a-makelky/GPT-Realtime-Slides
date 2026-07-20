@@ -71,13 +71,37 @@ export const deck = Object.freeze({
       id: "voice",
       layout: "quote",
       eyebrow: "Silent voice control",
-      title: "“Cue, go to slide seven.”",
+      title: '"Cue, go to slide seven."',
       body: "The wake word is verified in the browser. One allowed tool may run. The model never improvises the deck and never speaks back.",
       footer: "Wake-word gated · one tool · no generated slide content",
       notes: {
         purpose: "Show why the Realtime layer is constrained.",
         talkTrack: "Ordinary room speech is ignored. Commands are allowlisted and dispatched through the same controller as manual input.",
-        cue: "Use the command sandbox with ‘go to slide 7’.",
+        cue: 'Use the command sandbox with "go to slide 7".',
+      },
+    },
+    {
+      id: "audience-input",
+      layout: "columns",
+      eyebrow: "The room writes back",
+      title: "Anonymous input can become live, aggregate evidence.",
+      columns: [
+        {
+          label: "Audience",
+          title: "Two quick ratings",
+          body: "Entrance and exit responses are paired with an opaque attendee ID and a recovery code.",
+        },
+        {
+          label: "Presenter",
+          title: "Grouped results only",
+          body: "The deck reads grouped results from Cloudflare D1 without exposing individual responses.",
+        },
+      ],
+      footer: "The room becomes part of the story",
+      notes: {
+        purpose: "Demonstrate that audience data can enter the presentation without becoming public attendee data.",
+        talkTrack: "The public starter stores no names, emails, testimonials, or free text. Results appear only after a sufficiently large group has responded.",
+        cue: "Open Results from the presenter controls.",
       },
     },
     {
@@ -89,7 +113,7 @@ export const deck = Object.freeze({
         "Edit one deck module for slide copy and speaker notes.",
         "Change six theme tokens instead of hunting through CSS.",
         "Choose which controls and Realtime features are enabled.",
-        "Deploy the static demo anywhere—or run it offline after load.",
+        "Deploy the static demo anywhere, or run it offline after load.",
       ],
       footer: "No framework-specific authoring language",
       notes: {
